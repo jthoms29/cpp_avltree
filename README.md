@@ -1,1 +1,3 @@
-# cpp_linked_list
+# cpp_avltree
+
+Implementing an AVL tree to practice using C++.
