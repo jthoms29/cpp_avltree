@@ -117,27 +117,35 @@ public:
             //has two children
             if (node->getLeftRef() != nullptr && node->getRightRef() != nullptr) {
                 T el = getLeastGreatest(node);
-                deleteNodeRecurseHelper(el, node)
+                deleteNodeRecurseHelper(el, node);
                 node->setElement(el);
+            }
 
             // is leaf node
-            else if (node->getLetRef() == nullptr && node->getRightRef() == nullptr) {
+            else if (node->getLeftRef() == nullptr && node->getRightRef() == nullptr) {
                 delete node;
                 return true;
             }
 
+            //has one child, it is grafted in place of current node
+            else {
+                JTBinNode<T>* child = node->getLeftRef();
+                //only one will be null, so we just have to check one
+                if (node->getRightRef() != nullptr)
+                    child = node->getRightRef();
 
-            //has one child HOW DO I GRAFT IT ON
-            else
-                if (node->getLeftRef
-            // This was the node to be deleted
+                node->setElement(child->getElement());
+                node->setLeftChild(child->getLeftRef());
+                node->setRightChild(child->getRightRef());
+
+                delete(child);
+            }
         }
-
         return false;
     }
 
     // forget the actual name for this concept
-    T getLeastGreatest(JTBinNode<T> node) {
+    T getLeastGreatest(JTBinNode<T>* node) {
         //finding the smallest element in the right hand subtree
         JTBinNode<T>* walker = node;
         walker = walker->getRightRef();
