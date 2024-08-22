@@ -1,4 +1,4 @@
-#include<iostream>
+//#include<iostream>
 using namespace::std;
 //#include "JTBinNode.h" <- This is like defining it twice since this is also a header file.
 
@@ -93,6 +93,59 @@ public:
 
         printTreeUtil(root->getLeftRef(), space);
 
+    }
+
+    void deleteNode(T val) {
+        deleteNodeRecurseHelper(val, head);
+    }
+
+    bool deleteNodeRecurseHelper(T val, JTBinNode<T>* node) {
+        if (node == nullptr)
+            return false;
+
+        if (node->getElement() > val) {
+            if (deleteNodeRecurseHelper(val, node->getLeftRef()))
+                node->setLeftChild(nullptr);
+        }
+
+        else if (node->getElement() < val) {
+            if (deleteNodeRecurseHelper(val, node->getRightRef()))
+                node->setRightChild(nullptr);
+        }
+
+        else if (node->getElement() == val) {
+            //has two children
+            if (node->getLeftRef() != nullptr && node->getRightRef() != nullptr) {
+                T el = getLeastGreatest(node);
+                deleteNodeRecurseHelper(el, node)
+                node->setElement(el);
+
+            // is leaf node
+            else if (node->getLetRef() == nullptr && node->getRightRef() == nullptr) {
+                delete node;
+                return true;
+            }
+
+
+            //has one child HOW DO I GRAFT IT ON
+            else
+                if (node->getLeftRef
+            // This was the node to be deleted
+        }
+
+        return false;
+    }
+
+    // forget the actual name for this concept
+    T getLeastGreatest(JTBinNode<T> node) {
+        //finding the smallest element in the right hand subtree
+        JTBinNode<T>* walker = node;
+        walker = walker->getRightRef();
+
+        while(walker->getLeftRef() != nullptr)
+            walker = walker->getLeftRef();
+
+        return walker->getElement();
     }
 
 };
