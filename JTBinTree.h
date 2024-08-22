@@ -1,5 +1,6 @@
 //#include<iostream>
 using namespace::std;
+#include <initializer_list>
 //#include "JTBinNode.h" <- This is like defining it twice since this is also a header file.
 
 #define PRINT_PAD 10 //for printTree()
@@ -13,19 +14,6 @@ private:
     JTBinNode<T>* prev;    // Previous node of cursor
                            
     
-public:
-    JTBinTree(JTBinNode<T>* node)
-    // cursor will be initialized to the before position (null, null)
-        :head{node}, cur{nullptr}, prev{nullptr} {}
-
-
-    bool search(T val) const {
-        // do exception
-        bool isIn = false;
-        searchRecurseHelper(val, head, &isIn);
-        return isIn; 
-    }
-
     void searchRecurseHelper(T val, JTBinNode<T>* node, bool* found) const {
         if (node == nullptr)
             return;
@@ -42,10 +30,6 @@ public:
     }
 
 
-    void insert(T val) {
-        insertRecurseHelper(val, head);    
-    }
-    
     void insertRecurseHelper(T val, JTBinNode<T>* node) {
         if (val > node->getElement()) {
             if (node->getRightRef() == nullptr) 
@@ -64,15 +48,6 @@ public:
         }
     }
 
-    JTBinNode<T>* createNode(T val) {
-        return new JTBinNode<T>(val);
-    }
-
-    /* Test function, stolen from https://www.geeksforgeeks.org/print-binary-tree-2-dimensions/ */
-    void printTree() {
-        printTreeUtil(head, 0);
-
-    }
 
     void printTreeUtil(JTBinNode<T>* root, int space) {
         
@@ -95,9 +70,6 @@ public:
 
     }
 
-    void deleteNode(T val) {
-        deleteNodeRecurseHelper(val, head);
-    }
 
     bool deleteNodeRecurseHelper(T val, JTBinNode<T>* node) {
         if (node == nullptr)
@@ -116,7 +88,7 @@ public:
         else if (node->getElement() == val) {
             //has two children
             if (node->getLeftRef() != nullptr && node->getRightRef() != nullptr) {
-                T el = getLeastGreatest(node);
+                T el = inOrderSuccessor(node);
                 deleteNodeRecurseHelper(el, node);
                 node->setElement(el);
             }
@@ -144,8 +116,8 @@ public:
         return false;
     }
 
-    // forget the actual name for this concept
-    T getLeastGreatest(JTBinNode<T>* node) {
+
+    T inOrderSuccessor(JTBinNode<T>* node) {
         //finding the smallest element in the right hand subtree
         JTBinNode<T>* walker = node;
         walker = walker->getRightRef();
@@ -155,5 +127,72 @@ public:
 
         return walker->getElement();
     }
+
+
+    JTBinNode<T>* createNode(T val) {
+        return new JTBinNode<T>(val);
+    }
+
+public:
+    /*
+     * Constructs new JTBinTree using element of type T as data element in root node
+     * T element: Data of type T
+     */
+    JTBinTree(T element)
+    // cursor will be initialized to the before position (null, null)
+        :head{createNode(element)}, cur{nullptr}, prev{nullptr} {}
+
+
+    /*
+     * Initializer list constructor. T elements will be added to tree in order of list
+     */
+    JTBinTree(initializer_list<T> initList) {
+        // this is so scuffed. I don't know anything about initializer lists
+        // WORKS BUT WILL FIX LATER
+        bool check = false;
+
+        for (auto el : initList) {
+        if (!check) {
+            head = createNode(el);
+            check = true;
+        }
+        else
+            insert(el);
+        }
+
+    }
+
+
+    /*
+     * Searches binary tree for specified value. Returns true if in, false otherwise
+     * T val: The value to be searched for
+     */
+    bool search(T val) const {
+        // do exception
+        bool isIn = false;
+        searchRecurseHelper(val, head, &isIn);
+        return isIn; 
+    }
+
+
+
+    void insert(T val) {
+        insertRecurseHelper(val, head);    
+    }
+    
+
+
+    /* Test function, stolen from https://www.geeksforgeeks.org/print-binary-tree-2-dimensions/ */
+    void printTree() {
+        printTreeUtil(head, 0);
+
+    }
+
+
+    void deleteNode(T val) {
+        deleteNodeRecurseHelper(val, head);
+    }
+
+
 
 };
