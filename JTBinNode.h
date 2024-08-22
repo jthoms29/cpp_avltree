@@ -18,8 +18,13 @@ public:
         leftChild = node;
     }
 
-    // Assume returning child shouldn't be a pointer
-    JTBinNode getLeftChild() {
+    // Not sure what general practice is, but having separate getter for
+    // references seems useful
+    const JTBinNode* getLeftRef() const {
+        return leftChild;
+    }
+
+    JTBinNode getLeftChild() const {
         return *leftChild;
     }
 
@@ -27,11 +32,15 @@ public:
         rightChild = node;
     }
     
+    const JTBinNode* getRightRef() const {
+        return rightChild;
+    }
+
     JTBinNode getRightChild() {
         return *rightChild;
     }
 
-    T getElement() {
+    T getElement() const {
         return element;
     }
 
