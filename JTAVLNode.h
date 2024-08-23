@@ -1,0 +1,5 @@
+class JTAVLNode : public JTBinNode {
+
+
+
+}

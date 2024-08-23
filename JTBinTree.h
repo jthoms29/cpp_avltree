@@ -13,8 +13,15 @@ private:
     JTBinNode<T>* cur;     // The current node of cursor
     JTBinNode<T>* prev;    // Previous node of cursor
                            
-    
-    void searchRecurseHelper(T val, JTBinNode<T>* node, bool* found) const {
+
+    /*
+     * Recursively moves through tree looking for specified value. The found pointer is returned in the actual
+     * search function
+     * T val: Value of type T to find in tree
+     * JTBinNode<T>* node: A pointer to the current node
+     * bool* found: Indicates whether value has been found or not
+     */
+    void searchRecurseHelper(T val, JTBinNode<T>* node, bool& found) const {
         if (node == nullptr)
             return;
 
@@ -26,8 +33,9 @@ private:
             searchRecurseHelper(val, node->getRightRef(), found);
 
         else
-            *found = true;
+            found = true;
     }
+
 
 
     void insertRecurseHelper(T val, JTBinNode<T>* node) {
@@ -147,18 +155,11 @@ public:
      * Initializer list constructor. T elements will be added to tree in order of list
      */
     JTBinTree(initializer_list<T> initList) {
-        // this is so scuffed. I don't know anything about initializer lists
-        // WORKS BUT WILL FIX LATER
-        bool check = false;
 
-        for (auto el : initList) {
-        if (!check) {
-            head = createNode(el);
-            check = true;
-        }
-        else
-            insert(el);
-        }
+        head = createNode(initList.begin()[0]);
+        
+        for (int i = 1; i < initList.size(); i++)
+            insert(initList.begin()[i]);
 
     }
 
@@ -170,7 +171,7 @@ public:
     bool search(T val) const {
         // do exception
         bool isIn = false;
-        searchRecurseHelper(val, head, &isIn);
+        searchRecurseHelper(val, head, isIn);
         return isIn; 
     }
 
@@ -193,6 +194,8 @@ public:
         deleteNodeRecurseHelper(val, head);
     }
 
-
+    ~JTBinTree() {
+        delete head;
+    }
 
 };

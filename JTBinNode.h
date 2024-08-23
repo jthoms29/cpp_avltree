@@ -20,7 +20,7 @@ public:
 
     // Not sure what general practice is, but having separate getter for
     // references seems useful
-    const JTBinNode* getLeftRef() const {
+    JTBinNode* getLeftRef() const {
         return leftChild;
     }
 
@@ -32,7 +32,7 @@ public:
         rightChild = node;
     }
     
-    const JTBinNode* getRightRef() const {
+    JTBinNode* getRightRef() const {
         return rightChild;
     }
 
@@ -42,6 +42,15 @@ public:
 
     T getElement() const {
         return element;
+    }
+
+    void setElement(T el) {
+        element = el;
+    }
+
+    ~JTBinNode() {
+        delete leftChild;
+        delete rightChild;
     }
 
 };
