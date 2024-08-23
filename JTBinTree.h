@@ -37,7 +37,12 @@ private:
     }
 
 
-
+    /*
+     * Recursively moves through tree looking for place to put new value. Uses standard bst insertion
+     * algorithm
+     * T val: Value of type T to add a node with to tree
+     * JTBinNode<T>* node: Current node in tree
+     */
     void insertRecurseHelper(T val, JTBinNode<T>* node) {
         if (val > node->getElement()) {
             if (node->getRightRef() == nullptr) 
@@ -56,7 +61,9 @@ private:
         }
     }
 
-
+    /*
+     * Utility function used for printing tree. Not written by me
+     */
     void printTreeUtil(JTBinNode<T>* root, int space) {
         
         if (root == nullptr)
@@ -78,7 +85,11 @@ private:
 
     }
 
-
+    /*
+     * Helper function for node deletion. Handles all three cases for BST node deletion.
+     * T val: Value to delete node of from tree
+     * JTBinNode<T>* node: Current node in tree
+     */
     bool deleteNodeRecurseHelper(T val, JTBinNode<T>* node) {
         if (node == nullptr)
             return false;
@@ -125,6 +136,11 @@ private:
     }
 
 
+    /*
+     * Helper function for node deletion in the case that a node deletion has two
+     * children. Finds the inorder successor of specified node.
+     * JTBinNode<T>* node: Node to find inorder successor of
+     */
     T inOrderSuccessor(JTBinNode<T>* node) {
         //finding the smallest element in the right hand subtree
         JTBinNode<T>* walker = node;
@@ -136,7 +152,10 @@ private:
         return walker->getElement();
     }
 
-
+    /*
+     * Utility function. Dynamically allocates new node with specified value
+     * T val: Value to add to new node
+     */
     JTBinNode<T>* createNode(T val) {
         return new JTBinNode<T>(val);
     }
@@ -155,7 +174,6 @@ public:
      * Initializer list constructor. T elements will be added to tree in order of list
      */
     JTBinTree(initializer_list<T> initList) {
-
         head = createNode(initList.begin()[0]);
         
         for (int i = 1; i < initList.size(); i++)
@@ -176,7 +194,10 @@ public:
     }
 
 
-
+    /*
+     * Inserts new value into tree. Uses standard BST insertion alorithm
+     * T val: Value to add node of into tree
+     */
     void insert(T val) {
         insertRecurseHelper(val, head);    
     }
@@ -189,11 +210,17 @@ public:
 
     }
 
-
+    /*
+     * Deletes node with specified value from tree
+     * T val: Value to delete from tree
+     */
     void deleteNode(T val) {
         deleteNodeRecurseHelper(val, head);
     }
 
+    /*
+     * Destructor. Deletes head node, which will in turn recursively delete entire tree.
+     */
     ~JTBinTree() {
         delete head;
     }
