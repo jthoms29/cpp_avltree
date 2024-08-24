@@ -1,57 +1,48 @@
 #include <iostream>
 #include "JTBinNode.h"
-#include "JTBinTree.h"
+//#include "JTBinTree.h"
 
 using namespace::std;
 
 int main(void) {
+    //JTBinNode tests
+    //getElement
+    JTBinNode<int>* testNode = JTBinNode<int>::createJTBinNode(5);
+    if (testNode->getElement() != 5)
+        std::cout << "getElement() doesn't work correctly\n";
 
-    cout << "Intertion test: " << endl;
-    JTBinTree<int> tree(10);
-
-    tree.insert(12);
-    tree.insert(5);
-    tree.insert(4);
-    tree.insert(20);
-    tree.insert(8);
-    tree.insert(7);
-    tree.insert(15);
-    tree.insert(13);
-
-
-    if (tree.search(5))
-        cout << "yep\n";
-
-    if (tree.search(9999))
-        cout << "nope\n";
-
-    tree.printTree();
-
-    cout << "\n\n\n\n\n\n\n\n\nDeletionTest: " << endl;
-
-    JTBinNode test2 = 50;
-    JTBinTree tree2(50);
-
-    tree2.insert(30);
-    tree2.insert(70);
-    tree2.insert(60);
-    tree2.insert(80);
-    tree2.insert(20);
-    tree2.insert(40);
-
-    tree2.printTree();
+    //setting/getting children
+    try {
+        testNode->getLeftChild();
+        std::cout << "Getting nullptr left child should throw except\n";
+    }
+    catch (int e) {}
     
-    tree2.deleteNode(20);
-    tree2.deleteNode(30);
-    tree2.deleteNode(50);
+    try {
+        testNode->getRightChild();
+        std::cout << "Getting nullptr right child should throw except\n";
+    }
+    catch (int e) {}
 
-    cout << "$$$$$$$$$$$$$$$$$$$$$$\n\n\n\n" << endl;
-    tree2.printTree();
+    if (testNode->getLeftRef() != nullptr)
+        std::cout << "getLeftRef while nullptr\n";
+
+    if (testNode->getRightRef() != nullptr)
+        std::cout << "getRightRef while nullptr\n";
+
+    JTBinNode<int>* leftTest = JTBinNode<int>::createJTBinNode(4);
+    testNode->setLeftChild(leftTest);
+
+    try {
+        if (testNode->getLeftChild() != *leftTest)
+            std::cout << "getLeftChild\n";
+    }
+    catch (int e) {
+        std::cout << "Threw exception when checking left child of node\n";
+    }
     
-    cout << "\n\n\n\n";
-
-    JTBinTree list({10,12,5,4,20,8,7,15,13});
-    list.printTree();
+    if (testNode->getLeftRef() != leftTest)
+        std::cout << "getLeftRef\n";
 
 }
 
