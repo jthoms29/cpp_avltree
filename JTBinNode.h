@@ -22,8 +22,8 @@ private:
 public:
 
     /**
-     * Static allocation causes issues when constructor is called. This, with the
-     * instructor being private, ensures this class can never be statically allocated
+     * Static allocation causes issues when destructor is called. This class, with the actual
+     * constructor being private, ensures this can never be locally allocated
      * T element: The element to add to the new node.
      */
     static JTBinNode* createJTBinNode(T element) {
@@ -107,12 +107,24 @@ public:
 
 };
 
+//compares by value, not reference.
 template<typename T>
 bool operator==(const JTBinNode<T>& n1, const JTBinNode<T>& n2) {
     bool check = true;
     if (n1.getElement() != n2.getElement()) check = false;
-//    if (n1.getLeftChild().getElement() != n2.getLeftChild().getElement()) check = false;
- //   if (n1.getRightChild().getElement() != n2.getRightChild().getElement()) check = false;
+
+    // may be able to simplify this
+    if (n1.getLeftRef() == nullptr && n2.getLeftRef() != nullptr ||
+            n1.getLeftRef() != nullptr && n2.getLeftRef() == nullptr) check = false;
+
+    if (n1.getRightRef() == nullptr && n2.getRightRef() != nullptr ||
+            n1.getRightRef() != nullptr && n2.getRightRef() == nullptr) check = false;
+
+    if (check && n1.getLeftRef() != nullptr)
+        if (n1.getLeftChild().getElement() != n2.getLeftChild().getElement()) check = false;
+
+    if (check && n1.getRightRef() != nullptr)
+        if (n1.getRightChild().getElement() != n2.getRightChild().getElement()) check = false;
     return check;
 }
 
