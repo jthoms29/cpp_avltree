@@ -1,6 +1,6 @@
 #include <iostream>
 #include "JTBinNode.h"
-//#include "JTBinTree.h"
+#include "JTBinTree.h"
 
 using namespace::std;
 
@@ -107,7 +107,58 @@ int main(void) {
 
     
     //Testing JTBinTree #############################################################
+    JTBinTree testTree(100);
+    testTree.insert(50);
+    testTree.insert(150);
+    testTree.insert(75);
+    testTree.insert(25);
+    testTree.insert(125);
+    testTree.insert(175);
+    testTree.printTree();
 
+    if (!testTree.search(100))
+        std::cout << "100 should be in tree\n";
+
+    if (!testTree.search(25))
+        std::cout << "25 should be in tree\n"; 
+        
+
+    if (testTree.search(123))
+        std::cout << "123 shouldn't be in tree\n";
+
+    if (testTree.search(176))
+        std::cout << "176 shouldn't be in tree\n";
+
+    //leaf deletion
+    testTree.deleteNode(25);
+    if (testTree.search(25))
+        std::cout << "25 shouldn't be in tree anymore\n";
+    testTree.printTree();
+
+    //one child deletion
+    testTree.deleteNode(50);
+    if (testTree.search(25))
+        std::cout << "25 shouldn't be in tree anymore\n";
+    testTree.printTree();
+    testTree.deleteNode(100);
+
+    //two children deletion
+    if (testTree.search(25))
+        std::cout << "25 shouldn't be in tree anymore\n";
+    testTree.printTree();
+
+    try {
+        testTree.insert(75);
+        std::cout << "Inserting already exisitng val should throw exception\n";
+    }
+    catch (int e) {}
+    
+    try {
+        testTree.insert(50);
+    }
+    catch (int e) {
+        std::cout << "Should be able to insert 50 again, threw exception\n";
+    }
 
 }
 

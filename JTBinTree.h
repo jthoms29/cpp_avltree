@@ -1,5 +1,5 @@
 //#include<iostream>
-using namespace::std;
+//using namespace::std;
 #include <initializer_list>
 //#include "JTBinNode.h" <- This is like defining it twice since this is also a header file.
 
@@ -32,7 +32,7 @@ private:
         if (node->getElement() < val)
             searchRecurseHelper(val, node->getRightRef(), found);
 
-        else
+        if (node->getElement() == val)
             found = true;
     }
 
@@ -76,10 +76,10 @@ private:
         printTreeUtil(root->getRightRef(), space);
 
         //print current node after space count
-        cout << endl;
+        std::cout << std::endl;
         for (int i = PRINT_PAD; i < space; i++)
-            cout << " ";
-        cout << root->getElement() << "\n";
+            std::cout << " ";
+        std::cout << root->getElement() << "\n";
 
         printTreeUtil(root->getLeftRef(), space);
 
@@ -157,7 +157,7 @@ private:
      * T val: Value to add to new node
      */
     JTBinNode<T>* createNode(T val) {
-        return new JTBinNode<T>(val);
+        return JTBinNode<T>::createJTBinNode(val);
     }
 
 public:
@@ -173,7 +173,7 @@ public:
     /*
      * Initializer list constructor. T elements will be added to tree in order of list
      */
-    JTBinTree(initializer_list<T> initList) {
+    JTBinTree(std::initializer_list<T> initList) {
         head = createNode(initList.begin()[0]);
         
         for (int i = 1; i < initList.size(); i++)
@@ -199,6 +199,8 @@ public:
      * T val: Value to add node of into tree
      */
     void insert(T val) {
+        if (search(val))
+            throw -1;
         insertRecurseHelper(val, head);    
     }
     

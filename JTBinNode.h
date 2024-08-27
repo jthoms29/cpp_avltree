@@ -12,6 +12,7 @@ private:
 
 
 
+
     /*
      * Constructs a new binary node. Left and right child are null to begin
      * with
