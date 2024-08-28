@@ -11,7 +11,7 @@ private:
     JTBinNode* rightChild;
 
 
-
+protected:
 
     /*
      * Constructs a new binary node. Left and right child are null to begin

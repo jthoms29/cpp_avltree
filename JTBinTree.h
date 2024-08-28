@@ -8,7 +8,7 @@
 // Another header only class
 template<typename T>
 class JTBinTree {
-private:
+protected:
     JTBinNode<T>* head;
     JTBinNode<T>* cur;     // The current node of cursor
     JTBinNode<T>* prev;    // Previous node of cursor
@@ -160,6 +160,14 @@ private:
         return JTBinNode<T>::createJTBinNode(val);
     }
 
+protected:
+    /*
+     * Returns head of tree for subclasses
+     */
+    JTBinNode<T>* getHead() {
+        return head;
+    }
+
 public:
     /*
      * Constructs new JTBinTree using element of type T as data element in root node
@@ -220,6 +228,7 @@ public:
         deleteNodeRecurseHelper(val, head);
     }
 
+    JTBinTree() :head{nullptr} {}
     /*
      * Destructor. Deletes head node, which will in turn recursively delete entire tree.
      */
