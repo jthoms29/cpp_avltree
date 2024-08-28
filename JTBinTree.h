@@ -8,7 +8,75 @@
 // Another header only class
 template<typename T>
 class JTBinTree {
-protected:
+public:
+    /*
+     * Constructs new JTBinTree using element of type T as data element in root node
+     * T element: Data of type T
+     */
+    JTBinTree(T element)
+    // cursor will be initialized to the before position (null, null)
+        :head{createNode(element)}, cur{nullptr}, prev{nullptr} {}
+
+
+    /*
+     * Initializer list constructor. T elements will be added to tree in order of list
+     */
+    JTBinTree(std::initializer_list<T> initList) {
+        head = createNode(initList.begin()[0]);
+        
+        for (int i = 1; i < initList.size(); i++)
+            insert(initList.begin()[i]);
+
+    }
+
+
+    /*
+     * Searches binary tree for specified value. Returns true if in, false otherwise
+     * T val: The value to be searched for
+     */
+    bool search(T val) const {
+        // do exception
+        bool isIn = false;
+        searchRecurseHelper(val, head, isIn);
+        return isIn; 
+    }
+
+
+    /*
+     * Inserts new value into tree. Uses standard BST insertion alorithm
+     * T val: Value to add node of into tree
+     */
+    void insert(T val) {
+        if (search(val))
+            throw -1;
+        insertRecurseHelper(val, head);    
+    }
+    
+
+
+    /* Test function, stolen from https://www.geeksforgeeks.org/print-binary-tree-2-dimensions/ */
+    void printTree() {
+        printTreeUtil(head, 0);
+
+    }
+
+    /*
+     * Deletes node with specified value from tree
+     * T val: Value to delete from tree
+     */
+    void deleteNode(T val) {
+        deleteNodeRecurseHelper(val, head);
+    }
+
+    JTBinTree() :head{nullptr} {}
+    /*
+     * Destructor. Deletes head node, which will in turn recursively delete entire tree.
+     */
+    ~JTBinTree() {
+        delete head;
+    }
+
+private:
     JTBinNode<T>* head;
     JTBinNode<T>* cur;     // The current node of cursor
     JTBinNode<T>* prev;    // Previous node of cursor
@@ -59,30 +127,6 @@ protected:
             else
                 insertRecurseHelper(val, node->getLeftRef());
         }
-    }
-
-    /*
-     * Utility function used for printing tree. Not written by me
-     */
-    void printTreeUtil(JTBinNode<T>* root, int space) {
-        
-        if (root == nullptr)
-            return;
-
-        //increase dist between levels
-        space += PRINT_PAD;
-
-        //process right child first
-        printTreeUtil(root->getRightRef(), space);
-
-        //print current node after space count
-        std::cout << std::endl;
-        for (int i = PRINT_PAD; i < space; i++)
-            std::cout << " ";
-        std::cout << root->getElement() << "\n";
-
-        printTreeUtil(root->getLeftRef(), space);
-
     }
 
     /*
@@ -168,72 +212,27 @@ protected:
         return head;
     }
 
-public:
     /*
-     * Constructs new JTBinTree using element of type T as data element in root node
-     * T element: Data of type T
+     * Utility function used for printing tree. Not written by me
      */
-    JTBinTree(T element)
-    // cursor will be initialized to the before position (null, null)
-        :head{createNode(element)}, cur{nullptr}, prev{nullptr} {}
-
-
-    /*
-     * Initializer list constructor. T elements will be added to tree in order of list
-     */
-    JTBinTree(std::initializer_list<T> initList) {
-        head = createNode(initList.begin()[0]);
+    void printTreeUtil(JTBinNode<T>* root, int space) {
         
-        for (int i = 1; i < initList.size(); i++)
-            insert(initList.begin()[i]);
+        if (root == nullptr)
+            return;
+
+        //increase dist between levels
+        space += PRINT_PAD;
+
+        //process right child first
+        printTreeUtil(root->getRightRef(), space);
+
+        //print current node after space count
+        std::cout << std::endl;
+        for (int i = PRINT_PAD; i < space; i++)
+            std::cout << " ";
+        std::cout << root->getElement() << "\n";
+
+        printTreeUtil(root->getLeftRef(), space);
 
     }
-
-
-    /*
-     * Searches binary tree for specified value. Returns true if in, false otherwise
-     * T val: The value to be searched for
-     */
-    bool search(T val) const {
-        // do exception
-        bool isIn = false;
-        searchRecurseHelper(val, head, isIn);
-        return isIn; 
-    }
-
-
-    /*
-     * Inserts new value into tree. Uses standard BST insertion alorithm
-     * T val: Value to add node of into tree
-     */
-    void insert(T val) {
-        if (search(val))
-            throw -1;
-        insertRecurseHelper(val, head);    
-    }
-    
-
-
-    /* Test function, stolen from https://www.geeksforgeeks.org/print-binary-tree-2-dimensions/ */
-    void printTree() {
-        printTreeUtil(head, 0);
-
-    }
-
-    /*
-     * Deletes node with specified value from tree
-     * T val: Value to delete from tree
-     */
-    void deleteNode(T val) {
-        deleteNodeRecurseHelper(val, head);
-    }
-
-    JTBinTree() :head{nullptr} {}
-    /*
-     * Destructor. Deletes head node, which will in turn recursively delete entire tree.
-     */
-    ~JTBinTree() {
-        delete head;
-    }
-
 };

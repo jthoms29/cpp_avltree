@@ -1,7 +1,8 @@
 #include <iostream>
 #include "JTBinNode.h"
 #include "JTBinTree.h"
-
+#include "JTAVLNode.h"
+#include "JTAVLTree.h"
 using namespace::std;
 
 int main(void) {
@@ -159,6 +160,9 @@ int main(void) {
     catch (int e) {
         std::cout << "Should be able to insert 50 again, threw exception\n";
     }
+
+
+    //JTAVLNode Testing ###############################################################
 
 }
 
